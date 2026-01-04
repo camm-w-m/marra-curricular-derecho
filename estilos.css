@@ -1,19 +1,67 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <title>Malla Derecho</title>
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
+body {
+  font-family: system-ui, sans-serif;
+  background: #fff0f6;
+  margin: 20px;
+  color: #4a154b;
+}
 
-<h1>Malla Curricular Derecho</h1>
-<div id="creditos"></div>
+h1 {
+  text-align: center;
+}
 
-<div id="malla"></div>
+#creditos {
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
 
-<div id="desbloqueadas" class="panel"></div>
+#malla {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
 
-<script src="script.js"></script>
-</body>
-</html>
+.semestre {
+  background: #ffe0ec;
+  border-radius: 12px;
+  padding: 10px;
+}
+
+.semestre h2 {
+  text-align: center;
+  font-size: 16px;
+}
+
+.curso {
+  background: #f8b6d2;
+  padding: 10px;
+  margin: 6px 0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+  font-size: 14px;
+}
+
+.curso:hover {
+  transform: scale(1.03);
+}
+
+.curso.bloqueado {
+  background: #f3cddd;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.curso.aprobado {
+  background: #d63384;
+  color: white;
+  text-decoration: line-through;
+}
+
+.panel {
+  margin-top: 25px;
+  padding: 15px;
+  background: #ffe0ec;
+  border-radius: 10px;
+}
+

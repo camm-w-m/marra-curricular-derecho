@@ -1,113 +1,94 @@
-const CREDITOS_POR_RAMO = 6;
+const CREDITOS = 6;
 
-const materias = [
-  // 1er semestre
-  { id:"romano", nombre:"Derecho Romano", req:[] },
-  { id:"intro", nombre:"Introducción al Derecho", req:[] },
-  { id:"sociedad", nombre:"Sociedad y Estado", req:[] },
-  { id:"contexto", nombre:"Contexto Mundial", req:[] },
-  { id:"comunicacion", nombre:"Técnicas de Comunicación", req:[] },
-  { id:"innovacion", nombre:"Innovación y Creatividad", req:[] },
-  { id:"computacion", nombre:"Computación", req:[] },
-  { id:"eng1", nombre:"English Beginners", req:[] },
+const materias = {
+  romano: { nombre: "Derecho Romano", req: [] },
+  intro: { nombre: "Introducción al Derecho", req: [] },
+  sociedad: { nombre: "Sociedad y Estado", req: [] },
+  contexto: { nombre: "Contexto Mundial", req: [] },
+  comunicacion: { nombre: "Técnicas de Comunicación", req: [] },
+  innovacion: { nombre: "Innovación y Creatividad", req: [] },
+  computacion: { nombre: "Computación", req: [] },
+  eng1: { nombre: "English Beginners", req: [] },
 
-  // 2do semestre
-  { id:"personas", nombre:"Personas y Bienes", req:["romano","intro"] },
-  { id:"proceso", nombre:"Teoría General del Proceso", req:[] },
-  { id:"penal1", nombre:"Derecho Penal I", req:["intro"] },
-  { id:"constitucional1", nombre:"Derecho Constitucional I", req:["intro","sociedad"] },
-  { id:"sociologia", nombre:"Sociología del Derecho", req:[] },
-  { id:"laboral", nombre:"Derecho Laboral", req:["intro"] },
-  { id:"analisis", nombre:"Análisis del Entorno", req:[] },
-  { id:"eng2", nombre:"English Intermediate", req:["eng1"] },
+  personas: { nombre: "Personas y Bienes", req: ["romano","intro"] },
+  proceso: { nombre: "Teoría General del Proceso", req: [] },
+  penal1: { nombre: "Derecho Penal I", req: ["intro"] },
+  constitucional1: { nombre: "Derecho Constitucional I", req: ["intro","sociedad"] },
+  sociologia: { nombre: "Sociología del Derecho", req: [] },
+  laboral: { nombre: "Derecho Laboral", req: ["intro"] },
+  analisis: { nombre: "Análisis del Entorno", req: [] },
+  eng2: { nombre: "English Intermediate", req: ["eng1"] },
 
-  // 3er semestre
-  { id:"obligaciones", nombre:"Obligaciones", req:["personas"] },
-  { id:"penal2", nombre:"Derecho Penal II", req:["penal1"] },
-  { id:"constitucional2", nombre:"Derecho Constitucional II", req:["constitucional1"] },
-  { id:"comercial1", nombre:"Derecho Comercial I", req:["personas","constitucional1"] },
-  { id:"seguridad", nombre:"Seguridad Social", req:["laboral"] },
-  { id:"metodos", nombre:"Métodos de Investigación", req:["comunicacion"] },
-  { id:"internacional1", nombre:"Derecho Internacional Público I", req:["obligaciones"] },
-  { id:"eng3", nombre:"English High Intermediate", req:["eng2"] },
+  obligaciones: { nombre: "Obligaciones", req: ["personas"] },
+  penal2: { nombre: "Derecho Penal II", req: ["penal1"] },
+  constitucional2: { nombre: "Derecho Constitucional II", req: ["constitucional1"] },
+  comercial1: { nombre: "Derecho Comercial I", req: ["personas","constitucional1"] },
+  seguridad: { nombre: "Seguridad Social", req: ["laboral"] },
+  metodos: { nombre: "Métodos de Investigación", req: ["comunicacion"] },
+  internacional1: { nombre: "Derecho Internacional Público I", req: ["obligaciones"] },
+  eng3: { nombre: "English High Intermediate", req: ["eng2"] },
+};
 
-  // 4to semestre
-  { id:"contratos1", nombre:"Contratos I", req:["obligaciones"] },
-  { id:"familia", nombre:"Derecho de Familia", req:["personas"] },
-  { id:"admin1", nombre:"Derecho Administrativo I", req:["constitucional2"] },
-  { id:"filosofia", nombre:"Filosofía y Deontología Jurídica", req:["intro","sociologia"] },
-  { id:"comercial2", nombre:"Derecho Comercial II", req:["comercial1"] },
-  { id:"liderazgo", nombre:"Liderazgo y Ética", req:[] },
-  { id:"internacional2", nombre:"Derecho Internacional Privado I", req:["internacional1"] },
-  { id:"eng4", nombre:"English Advanced", req:["eng3"] },
-
-  // 5to semestre
-  { id:"contratos2", nombre:"Contratos II", req:["contratos1"] },
-  { id:"sucesiones", nombre:"Sucesiones", req:["familia"] },
-  { id:"admin2", nombre:"Derecho Administrativo II", req:["admin1"] },
-  { id:"comercial3", nombre:"Derecho Comercial III", req:["comercial2"] },
-  { id:"procesal_lab", nombre:"Derecho Procesal Laboral", req:["seguridad"] },
-  { id:"economia", nombre:"Economía General", req:[] },
-  { id:"internacional3", nombre:"Derecho Internacional Privado II", req:["internacional2"] },
-  { id:"practica1", nombre:"Práctica Profesional I", req:[] },
-
-  // 6to semestre
-  { id:"proc_civil1", nombre:"Procedimiento Civil I", req:["contratos2"] },
-  { id:"proc_penal", nombre:"Derecho Procesal Penal", req:["penal2"] },
-  { id:"aduanero", nombre:"Derecho Aduanero", req:["admin1"] },
-  { id:"ambiental", nombre:"Derecho Ambiental", req:[] },
-  { id:"tributario", nombre:"Derecho Tributario", req:["admin1"] },
-  { id:"seguros", nombre:"Derecho y Gestión de Seguros", req:["contratos1"] },
-  { id:"forense_lab", nombre:"Práctica Forense Laboral", req:["procesal_lab"] },
-  { id:"integracion", nombre:"Derecho de Integración", req:["admin1","internacional1"] }
+const semestres = [
+  { nombre: "1° Semestre", ramos: ["romano","intro","sociedad","contexto","comunicacion","innovacion","computacion","eng1"] },
+  { nombre: "2° Semestre", ramos: ["personas","proceso","penal1","constitucional1","sociologia","laboral","analisis","eng2"] },
+  { nombre: "3° Semestre", ramos: ["obligaciones","penal2","constitucional2","comercial1","seguridad","metodos","internacional1","eng3"] }
 ];
 
 let aprobadas = new Set(JSON.parse(localStorage.getItem("aprobadas") || "[]"));
 
-function puedeCursar(m) {
-  return m.req.every(r => aprobadas.has(r));
+function puedeCursar(id) {
+  return materias[id].req.every(r => aprobadas.has(r));
 }
 
 function render() {
   const malla = document.getElementById("malla");
   malla.innerHTML = "";
 
-  materias.forEach(m => {
-    const div = document.createElement("div");
-    div.className = "curso";
+  semestres.forEach(sem => {
+    const col = document.createElement("div");
+    col.className = "semestre";
 
-    if (aprobadas.has(m.id)) div.classList.add("aprobado");
-    else if (!puedeCursar(m)) div.classList.add("bloqueado");
+    const h2 = document.createElement("h2");
+    h2.textContent = sem.nombre;
+    col.appendChild(h2);
 
-    div.textContent = m.nombre;
-    div.onclick = () => aprobar(m);
-    malla.appendChild(div);
+    sem.ramos.forEach(id => {
+      const m = materias[id];
+      const div = document.createElement("div");
+      div.className = "curso";
+      div.textContent = m.nombre;
+
+      if (aprobadas.has(id)) div.classList.add("aprobado");
+      else if (!puedeCursar(id)) div.classList.add("bloqueado");
+
+      div.onclick = () => aprobar(id);
+      col.appendChild(div);
+    });
+
+    malla.appendChild(col);
   });
 
-  actualizarCreditos();
+  document.getElementById("creditos").textContent =
+    `Créditos aprobados: ${aprobadas.size * CREDITOS}`;
 }
 
-function aprobar(m) {
-  if (!puedeCursar(m) || aprobadas.has(m.id)) return;
+function aprobar(id) {
+  if (!puedeCursar(id) || aprobadas.has(id)) return;
 
-  aprobadas.add(m.id);
+  aprobadas.add(id);
   localStorage.setItem("aprobadas", JSON.stringify([...aprobadas]));
 
-  const desbloqueadas = materias.filter(x =>
-    x.req.includes(m.id) && puedeCursar(x)
-  );
+  const desbloqueadas = Object.entries(materias)
+    .filter(([k,v]) => v.req.includes(id) && puedeCursar(k))
+    .map(([_,v]) => v.nombre);
 
-  const panel = document.getElementById("desbloqueadas");
-  panel.innerHTML = desbloqueadas.length
-    ? `<strong>🔓 Se desbloqueó:</strong><br>${desbloqueadas.map(d => d.nombre).join("<br>")}`
-    : "No se desbloquearon nuevos ramos";
+  document.getElementById("desbloqueadas").innerHTML =
+    desbloqueadas.length
+      ? `✨ <strong>Se desbloquearon:</strong><br>${desbloqueadas.join("<br>")}`
+      : "No se desbloquearon nuevos ramos";
 
   render();
-}
-
-function actualizarCreditos() {
-  document.getElementById("creditos").textContent =
-    `Créditos aprobados: ${aprobadas.size * CREDITOS_POR_RAMO}`;
 }
 
 render();

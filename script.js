@@ -30,65 +30,36 @@ const materias = {
 };
 
 const semestres = [
-  { nombre: "1° Semestre", ramos: ["romano","intro","sociedad","contexto","comunicacion","innovacion","computacion","eng1"] },
-  { nombre: "2° Semestre", ramos: ["personas","proceso","penal1","constitucional1","sociologia","laboral","analisis","eng2"] },
-  { nombre: "3° Semestre", ramos: ["obligaciones","penal2","constitucional2","comercial1","seguridad","metodos","internacional1","eng3"] }
+  {
+    nombre: "1° Semestre",
+    ramos: ["romano","intro","sociedad","contexto","comunicacion","innovacion","computacion","eng1"]
+  },
+  {
+    nombre: "2° Semestre",
+    ramos: ["personas","proceso","penal1","constitucional1","sociologia","laboral","analisis","eng2"]
+  },
+  {
+    nombre: "3° Semestre",
+    ramos: ["obligaciones","penal2","constitucional2","comercial1","seguridad","metodos","internacional1","eng3"]
+  },
+  {
+    nombre: "4° Semestre",
+    ramos: ["contratos1","familia","admin1","filosofia","comercial2","liderazgo","internacional2","eng4"]
+  },
+  {
+    nombre: "5° Semestre",
+    ramos: ["contratos2","sucesiones","admin2","comercial3","procesal_lab","presupuestos","economia","internacional3","practica1"]
+  },
+  {
+    nombre: "6° Semestre",
+    ramos: ["proc_civil1","proc_penal","aduanero","ambiental","tributario","seguros","forense_lab","integracion"]
+  },
+  {
+    nombre: "7° Semestre",
+    ramos: ["proc_civil2","forense_penal","financiero","industrial","electiva1","electiva2","emprendimiento","comercio","practica2"]
+  },
+  {
+    nombre: "8° Semestre",
+    ramos: ["forense_civil","marc","procedimientos_esp","bursatil","electiva3","electiva4","electiva5","contratacion","seminario","proyecto"]
+  }
 ];
-
-let aprobadas = new Set(JSON.parse(localStorage.getItem("aprobadas") || "[]"));
-
-function puedeCursar(id) {
-  return materias[id].req.every(r => aprobadas.has(r));
-}
-
-function render() {
-  const malla = document.getElementById("malla");
-  malla.innerHTML = "";
-
-  semestres.forEach(sem => {
-    const col = document.createElement("div");
-    col.className = "semestre";
-
-    const h2 = document.createElement("h2");
-    h2.textContent = sem.nombre;
-    col.appendChild(h2);
-
-    sem.ramos.forEach(id => {
-      const m = materias[id];
-      const div = document.createElement("div");
-      div.className = "curso";
-      div.textContent = m.nombre;
-
-      if (aprobadas.has(id)) div.classList.add("aprobado");
-      else if (!puedeCursar(id)) div.classList.add("bloqueado");
-
-      div.onclick = () => aprobar(id);
-      col.appendChild(div);
-    });
-
-    malla.appendChild(col);
-  });
-
-  document.getElementById("creditos").textContent =
-    `Créditos aprobados: ${aprobadas.size * CREDITOS}`;
-}
-
-function aprobar(id) {
-  if (!puedeCursar(id) || aprobadas.has(id)) return;
-
-  aprobadas.add(id);
-  localStorage.setItem("aprobadas", JSON.stringify([...aprobadas]));
-
-  const desbloqueadas = Object.entries(materias)
-    .filter(([k,v]) => v.req.includes(id) && puedeCursar(k))
-    .map(([_,v]) => v.nombre);
-
-  document.getElementById("desbloqueadas").innerHTML =
-    desbloqueadas.length
-      ? `✨ <strong>Se desbloquearon:</strong><br>${desbloqueadas.join("<br>")}`
-      : "No se desbloquearon nuevos ramos";
-
-  render();
-}
-
-render();
